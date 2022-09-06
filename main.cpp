@@ -26,7 +26,7 @@ double timeToNum(const string& time) {
 	auto [hours, min] = make_tuple(time.substr(0, delIdx), time.substr(delIdx + 1));
 	return stoi(hours) + ((double)stoi(min) / 60.00);
 }
-vector<pair<string,string>> timesToMeet(const vector<pair<string,string>>& dailyBounds, vector<vector<pair<string, string>>>& calendars, int min)
+vector<pair<string,string>> timesToMeet(const vector<pair<string,string>>& dailyBounds, vector<vector<pair<string, string>>>& calendars, int dur)
 {
 	for (vector<pair<string,string>>& calendar : calendars) {
 		sort(calendar.begin(), calendar.end(), []( const pair<string, string>& p1, const pair<string, string>& p2) {
@@ -67,7 +67,7 @@ vector<pair<string,string>> timesToMeet(const vector<pair<string,string>>& daily
 		availableTimes.push_back(make_pair(maxEnd.first, minStart.first));
 	vector<pair<string, string>> ans{};
 	for (const auto& block : availableTimes) {
-		if ((timeToNum(block.second) - timeToNum(block.first)) * 60 >= min)
+		if ((timeToNum(block.second) - timeToNum(block.first)) * 60 >= dur)
 			ans.push_back(block);
 	}
 	return ans;
