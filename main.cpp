@@ -13,7 +13,7 @@ struct Time {
 	int row, col;
 	Time() : startStr("--:--"), endStr("--:--"), startNum(0), endNum(0), row{ -1 }, col{ -1 }{}
 	Time(const string& startStr, const string& endStr, double startNum, double endNum) : startStr(startStr), endStr(endStr), startNum(startNum), endNum(endNum), row{ -1 }, col{ -1 } {}
-	Time(const string& startStr, const string& endStr, double startNum, double endNum, int row, int col) : startStr(startStr), endStr(endStr), startNum(startNum), endNum(endNum), row{ row }, col{col} {}
+	Time(const string& startStr, const string& endStr, double startNum, double endNum, int row, int col) : startStr(startStr), endStr(endStr), startNum(startNum), endNum(endNum), row{ row }, col{ col } {}
 };
 struct comp {
 	bool operator()(const Time& b1, const Time& b2) {
@@ -26,16 +26,16 @@ double timeToNum(const string& time) {
 	auto [hours, min] = make_tuple(time.substr(0, delIdx), time.substr(delIdx + 1));
 	return stoi(hours) + ((double)stoi(min) / 60.00);
 }
-vector<pair<string,string>> timesToMeet(const vector<pair<string,string>>& dailyBounds, vector<vector<pair<string, string>>>& calendars, int dur)
+vector<pair<string, string>> timesToMeet(const vector<pair<string, string>>& dailyBounds, vector<vector<pair<string, string>>>& calendars, int dur)
 {
-	for (vector<pair<string,string>>& calendar : calendars) {
-		sort(calendar.begin(), calendar.end(), []( const pair<string, string>& p1, const pair<string, string>& p2) {
+	for (vector<pair<string, string>>& calendar : calendars) {
+		sort(calendar.begin(), calendar.end(), [](const pair<string, string>& p1, const pair<string, string>& p2) {
 			return timeToNum(p1.first) < timeToNum(p2.first);
 			});
 	}
 	vector<pair<string, string>> availableTimes{};
-	pair<string, int> maxEnd{ "--:--" , 0};
-	pair<string, int> minStart{ "--:--" , 24};
+	pair<string, int> maxEnd{ "--:--" , 0 };
+	pair<string, int> minStart{ "--:--" , 24 };
 	for (const auto& bound : dailyBounds) {
 		Time cur(bound.first, bound.second, timeToNum(bound.first), timeToNum(bound.second));
 		if (cur.startNum > maxEnd.second) {
@@ -84,13 +84,13 @@ int main()
 		{{"11:00", "13:00"}},
 		{{"11:00", "12:00"}, {"13:00", "15:00"}, {"16:15", "17:00"}},
 	};
-	int dur = 30; 
+	int dur = 30;
 	vector<pair<string, string>> ans = timesToMeet(dailyBounds, calendars, dur);
 	if (ans.empty()) {
 		cout << "There's no time to meet.\n";
 		return 0;
 	}
 	for (const auto& avlTime : ans) {
-		cout << avlTime.first << " " << avlTime.second << '\n';
+		cout << "[" << avlTime.first << " -> " << avlTime.second << "]\n";
 	}
 }
